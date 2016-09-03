@@ -1,0 +1,20 @@
+{
+  "name": "node-mailer",
+  "version": "0.0.1",
+  "description": "Node mailer endpoint to send emails",
+  "main": "server.js",
+  "dependencies": {
+    "aws-sdk": "^2.5.5",
+    "express": "^4.14.0",
+    "nodemailer": "^2.5.0",
+    "nodemailer-direct-transport": "^3.2.0",
+    "nodemailer-express-handlebars": "^2.0.0"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "author": "David Mullins",
+  "license": "ISC"
+}

@@ -1,0 +1,5 @@
+{
+    "accessKeyId": "awsKeyHere",
+    "secretAccessKey": "awsSecretHere",
+    "region": "us-east-1-example"
+}
