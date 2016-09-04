@@ -1,38 +1,80 @@
 var express = require('express');
 var app = express();
+var bodyParser = require('body-parser');
+
+app.all('/', function(req, res, next) {
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header("Access-Control-Allow-Headers", "X-Requested-With");
+  next();
+});
 
 app.get('/', function(req, res) {
     res.send('Return JSON or HTML View');
 });
 
-app.get('/send-msg', function(req, res) {
+app.get('/read-q', function(req,res) {
+    console.log(req.query);
+});
+
+app.use(bodyParser.urlencoded({
+    extended: true
+}));
+app.use(bodyParser.json());
+
+function checkWhiteListedDomains(req, res, next) {
+    var originDomain = req.get('origin');
+
+    function containsDomain(domain, index, array) {
+      return originDomain.indexOf(domain) > -1;
+    }
+
+    if (!(['jsbin', 'liftgateme'].some(containsDomain))) {
+        return;
+    }
+    next();
+}
+
+app.post('/send-msg', checkWhiteListedDomains, function(req, res) {
     // load aws sdk
     var aws = require('aws-sdk');
+        aws.config.loadFromPath('config.json'), // load aws config
+        ses = new aws.SES({apiVersion: '2010-12-01'}), //load AWS SES
 
-    // load aws config
-    aws.config.loadFromPath('config.json');
+        // https://jsbin.com/hixanogija/edit?html
+        // exPostContent = {
+        //     "toEmail": "liftgates@gmail.com",
+        //     "fromEmail":"liftgates@gmail.com",
+        //     "senderName": "Micky",
+        //     "contactEmail": "mmouse@dis.com",
+        //     "contactPhone": "7742663297",
+        //     "senderMsg": "Hello there!  I want a liftgate now!"
+        // }
+        to = ['liftgates@gmail.com'],
+        from = 'liftgates@gmail.com',
+        params = req.body,
+        defaultVal = 'Not Provided',
+        senderName = params.name || defaultVal,
+        toEmail = [params.toEmail] || ['liftgates@gmail.com'],
+        fromEmail = params.fromEmail || defaultVal,
+        contactEmail = params.contactEmail || defaultVal,
+        contactPhone = params.contactPhone || defaultVal,
+        senderMsg = params.senderMsg || defaultVal;
 
-    // load AWS SES
-    var ses = new aws.SES({apiVersion: '2010-12-01'});
+    if (!toEmail && !fromEmail) {
+        return;
+    }
 
-    // send to list
-    var to = ['liftgates@gmail.com'];
-
-    // this must relate to a verified SES account
-    var from = 'liftgates@gmail.com';
-
-    // this sends the email
-    // @todo - add HTML version
+    // this sends the email  @todo - add HTML version
     ses.sendEmail( { 
-       Source: from, 
-       Destination: { ToAddresses: to },
+       Source: fromEmail, 
+       Destination: { ToAddresses: toEmail },
        Message: {
            Subject: {
-              Data: 'A Message To You buddy'
+              Data: contactEmail
            },
            Body: {
                Text: {
-                   Data: 'Stop your messing around',
+                   Data: senderMsg,
                }
             }
        }
@@ -42,25 +84,6 @@ app.get('/send-msg', function(req, res) {
             console.log('Email sent:');
             console.log(data);
      });
-
-
-    // var nodemailer = require('nodemailer');
-    // var transporter = nodemailer.createTransport();
-    // var options = {
-    //    from: 'dave@adsf.com',
-    //    to: 'liftgates@gmail.com',
-    //    subject: 'hello',
-    //    html: '<b>hello world!</b>',
-    //    text: 'hello world!'
-    // },
-    // mailCallback = function (error, info){
-    //     if(error){
-    //         return console.log('error : ', error);
-    //     }
-    //     console.log('Message sent: ' + info);
-    // };
-
-    // transporter.sendMail(options, mailCallback);
 
     console.log('msg sent');
     res.send('Send msg route');
