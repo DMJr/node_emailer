@@ -1,6 +1,15 @@
 var express = require('express');
 var app = express();
 var bodyParser = require('body-parser');
+var exphbs  = require('express-handlebars'); //https://github.com/ericf/express-handlebars
+
+app.engine('handlebars', exphbs({defaultLayout: 'main'}));
+app.set('view engine', 'handlebars');
+app.use(express.static(__dirname+'/public'));
+app.use(bodyParser.urlencoded({
+    extended: true
+}));
+app.use(bodyParser.json());
 
 app.all('/', function(req, res, next) {
   res.header("Access-Control-Allow-Origin", "*");
@@ -12,14 +21,9 @@ app.get('/', function(req, res) {
     res.send('Return JSON or HTML View');
 });
 
-app.get('/read-q', function(req,res) {
-    console.log(req.query);
+app.get('/lgm-contact-form', function(req,res) {
+    res.render('contactUs');
 });
-
-app.use(bodyParser.urlencoded({
-    extended: true
-}));
-app.use(bodyParser.json());
 
 function checkWhiteListedDomains(req, res, next) {
     var originDomain = req.get('origin');
@@ -28,13 +32,14 @@ function checkWhiteListedDomains(req, res, next) {
       return originDomain.indexOf(domain) > -1;
     }
 
-    if (!(['jsbin', 'liftgateme'].some(containsDomain))) {
+    if (!(['localhost', 'jsbin', 'liftgateme'].some(containsDomain))) {
         return;
     }
     next();
 }
 
 app.post('/send-msg', checkWhiteListedDomains, function(req, res) {
+    console.log('in /send-msg');
     // load aws sdk
     var aws = require('aws-sdk');
         aws.config.loadFromPath('config.json'), // load aws config
@@ -61,9 +66,11 @@ app.post('/send-msg', checkWhiteListedDomains, function(req, res) {
         senderMsg = params.senderMsg || defaultVal;
 
     if (!toEmail && !fromEmail) {
+        console.log('FAILING');
         return;
     }
 
+        console.log('ATTEMPTING TO SEND');
     // this sends the email  @todo - add HTML version
     ses.sendEmail( { 
        Source: fromEmail, 
@@ -82,7 +89,6 @@ app.post('/send-msg', checkWhiteListedDomains, function(req, res) {
     , function(err, data) {
         if(err) throw err
             console.log('Email sent:');
-            console.log(data);
      });
 
     console.log('msg sent');

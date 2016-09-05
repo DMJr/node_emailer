@@ -1,0 +1,357 @@
+<script src="//ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+<style>
+    #lgm-custom-contact-form {
+        padding: 20px;
+        background: #FFF;
+        border: 2px solid #444;
+        -webkit-border-radius: 6;
+        -moz-border-radius: 6;
+        border-radius: 6px;
+        position: relative;
+        /*min-height: 250px;*/
+        -webkit-transition: all .5s ease;
+        transition: all .2s ease;
+    }
+    #lgm-custom-contact-form.expanded {
+    }
+    #lgm-custom-option-title {
+        width: 100%;
+        text-align: center;
+        padding: 10px 0;
+        border-bottom: 1px solid #444;
+    }
+    #lgm-custom-choices {
+        padding: 10px;
+        text-align: center;
+    }
+    #lgm-custom-contact-form-inputs {
+        display: none;
+    }
+    #lgm-custom-contact-form-inputs.active {
+        display: block;
+        height: 50px;
+        width: 100%;
+        -webkit-transition: all .5s ease;
+        transition: all .5s ease;
+    }
+
+    .form-field-holder {
+        width: 100%;
+        margin-bottom: 15px;
+    }
+    .form-field-name {
+        display: inline-block;
+        width: 200px
+    }
+    .form-field-input {
+        display: inline-block;
+        width: 200px;
+    }
+    .lgm-input-field {
+        border: none;
+        border-bottom: 2px dotted #444;
+        width: 100%;
+    }
+    .lgm-input-field:focus {
+        outline: none;
+    }
+
+    #lgm-nav-btns {
+        text-align: right;
+    }
+    .btn {
+        -webkit-border-radius: 6;
+        -moz-border-radius: 6;
+        border-radius: 6px;
+        width: 100px;
+        padding: 10px 20px;
+        text-align: center;
+        display: inline-block;
+        margin-right: 15px;
+        -webkit-transition: all .3s ease;
+        transition: all .3s ease;
+    }
+    .btn:hover {
+        cursor: pointer;
+    }
+    .primary-btn {
+        background: #22b8f3;
+        color: #FFF;
+    }
+    .secondary-btn {
+        color: #22b8f3;
+        background: #FFF;
+        border: 2px solid #22b8f3;
+    }
+    .option-btn {
+        -webkit-border-radius: 6;
+        -moz-border-radius: 6;
+        border-radius: 6px;
+        color: #22b8f3;
+        background: #FFF;
+        padding: 20px;
+        border: solid #22b8f3 2px;
+        text-decoration: none;
+        width: 200px;
+        margin-right: 10px;
+        margin-bottom: 10px;
+        text-align: center;
+        display: inline-block;
+        -webkit-transition: all .3s ease;
+        transition: all .3s ease;
+    }
+
+    .option-btn:hover {
+        background: #22b8f3;
+        color: #FFF;
+        cursor: pointer;
+        text-decoration: none;
+    }
+    .title {
+        text-align: center;
+    }
+</style>
+
+
+<div id="lgm-custom-contact-form">
+    <div id="lgm-custom-option-title"></div>
+    <div id="lgm-custom-choices"></div>
+    <div id="lgm-custom-contact-form-inputs"></div>
+    <div id="lgm-nav-btns"></div>
+</div>
+
+<script>
+(function() {
+    var steps = {
+        'title': 'How can we help?',
+        'options': {
+            'liftgate': {
+                'name': 'LiftGate',
+                'title': 'What are you looking for?',
+                'options': {
+                    'replacment': {
+                        'name': 'Replacment of Current Gate',
+                        'title': 'Great! Please provide the info below and we\'ll get right back to you',
+                        'formFields': ['Name', 'Email', 'Manufacturer', 'Serial Number']
+                    },
+                    'newStyle': {
+                        'name': 'Choose a new gate',
+                        'title': 'What type of gate are you interested in?',
+                        'options': {
+                            'tuckUnder': {
+                                'name': 'Tuck-Under',
+                                'title': 'Great! Please provide the info below and we\'ll get right back to you',
+                                'formFields': ['Name', 'Email', 'Aprox. Capacity', 'Vehicle Type', 'Distance Ground to Deck Height']
+                            },
+                            'pickupLift': {
+                                'name': 'Pickup-Lift',
+                                'title': 'Great! Please provide the info below and we\'ll get right back to you',
+                                'formFields': ['Name', 'Email', 'Aprox. Capacity', 'Vehicle Type', 'Distance Ground to Deck Height']
+                            },
+                            'columnLift': {
+                                'name': 'Column Lift',
+                                'title': 'Great! Please provide the info below and we\'ll get right back to you',
+                                'formFields': ['Name', 'Email', 'Aprox. Capacity', 'Vehicle Type', 'Distance Ground to Deck Height']
+                            },
+                            'cantileverLift': {
+                                'name': 'Cantilever Lift',
+                                'title': 'Great! Please provide the info below and we\'ll get right back to you',
+                                'formFields': ['Name', 'Email', 'Aprox. Capacity', 'Vehicle Type', 'Distance Ground to Deck Height']
+                            },
+                            'manufactuerModel': {
+                                'name': 'Manufacturer\'s model number',
+                                'title': 'Great! Please provide the info below and we\'ll get right back to you',
+                                'formFields': ['Name', 'Email', 'Aprox. Capacity', 'Vehicle Type', 'Distance Ground to Deck Height']
+                            }
+                        }
+                    }
+                }
+            },
+            'parts': {
+                'name': 'Parts',
+                'title': 'Great! If you have a part number, enter it below or include the liftgate\'s serial number and a description.',
+                'formFields': ['Email', 'Name', 'Part Number', 'Serial Number', 'Description']
+            },
+            'general': {
+                'name': 'General Inquiry',
+                'title': 'Thanks for dropping by.  Leave us a note blow.',
+                'formFields': ['Name', 'Email']
+            }
+        }
+    },
+
+    currentPath = null,
+    currentPlace = ['steps'],
+    formTrgtEl = document.getElementById('lgm-custom-contact-form'),
+    formTrgtInputEl = document.getElementById('lgm-custom-contact-form-inputs'),
+    formTrgtOptionEl = document.getElementById('lgm-custom-choices'),
+    formTrgtTitleEl = document.getElementById('lgm-custom-option-title'),
+    formTrgtNavEl = document.getElementById('lgm-nav-btns'),
+
+    showNext = function(path, key) {
+        var currentObj = eval(currentPlace.join('.'));
+
+        if (currentObj.options) {
+            formTrgtOptionEl.innerHTML = '';
+            createTitle(currentObj.title);
+            for (var option in currentObj.options) {
+                createOption(currentObj.options[option]['name'] || '', option, currentPath);
+            }
+        } else if (currentObj.formFields) {
+            if (currentObj.title) {
+                createTitle(currentObj.title);
+                createForm(currentObj.formFields, 'lgm-custom-contact-form-inputs');
+            }
+        }
+    },
+
+    createForm = function(formFields, target) {
+        var trg = document.getElementById(target),
+            fieldsCreated = 0,
+            formFieldLength = formFields.length * 25;
+            sizeContainer = function() {
+                formTrgtInputEl.style.height = formFieldLength + 'px';
+            };
+
+        formTrgtOptionEl.innerHTML = '';
+        trg.innerHTML = '';
+        trg.className += ' active';
+
+        function addInputField(name) {
+            var inputField = document.createElement('input'),
+                holder = document.createElement('div'),
+                nameDiv = document.createElement('div'),
+                inputDiv = document.createElement('div');
+
+            holder.className = 'form-field-holder';
+            trg.appendChild(holder);
+            nameDiv.className = 'form-field-name';
+            nameDiv.innerHTML = name;
+            holder.appendChild(nameDiv);
+
+            inputDiv.className = 'form-field-input';
+            holder.appendChild(inputDiv);
+
+            inputField.placeholder = name;
+            inputField.setAttribute('data-name', name);
+            inputField.className = 'lgm-input-field';
+            inputDiv.appendChild(inputField);
+        };
+
+        formFields.forEach(function(fieldName, ind, arry) {
+            addInputField(fieldName);
+            fieldsCreated++;
+            
+            if (fieldsCreated === arry.length) {
+                sizeContainer();
+            }
+        })
+
+        formTrgtEl.style.height = formTrgtInputEl.offsetHeight + formTrgtTitleEl.offsetHeight + formTrgtNavEl.offsetHeight;
+    },
+
+    createTitle = function(titleTxt) {
+        var el = document.createElement('div');
+
+        el.className = 'title';
+        formTrgtTitleEl.innerHTML = '';
+        el.innerHTML =  titleTxt;
+        formTrgtTitleEl.appendChild(el);
+    },
+
+    createOption = function(txt, key, path) {
+        var el = document.createElement('div'),
+            onClickOption = function() {
+                currentPlace.push('options', this.getAttribute('data-option-key'));
+                showNext(this.getAttribute('data-path'), this.getAttribute('data-option-key'));
+            };
+
+        el.className = 'option-btn';
+        el.innerHTML = txt;
+        el.setAttribute('data-path', path);
+        el.setAttribute('data-option-key', key);
+        el.addEventListener('click', onClickOption, false);
+
+        formTrgtOptionEl.appendChild(el);
+    },
+
+    createButtons = function() {
+        var reset = document.createElement('div'),
+            submit = document.createElement('div'),
+            resetForm = function() {
+                currentPlace = ['steps'];
+                formTrgtNavEl.innerHTML = '';
+                formTrgtInputEl.innerHTML = '';
+                formTrgtInputEl.className = '';
+
+                init();
+            },
+            submitFrom = function() {
+                var inputs = document.querySelectorAll('#lgm-custom-contact-form-inputs input'),
+                    content = {};
+
+                var name,
+                    val,
+                    formData;
+
+                for(var input in inputs) {
+                    if (inputs[input].value) {
+                        name = inputs[input].getAttribute('data-name');
+                        val = inputs[input].value;
+
+                        content[name] = val;
+                    }
+                }
+                content['toEmail'] = 'liftgates@gmail.com';
+
+                formData = {
+                    "toEmail": "liftgates@gmail.com",
+                    "fromEmail":"liftgates@gmail.com",
+                    "contactEmail": content.Email || 'From LGM',
+                    "senderMsg": JSON.stringify(content)
+                };
+
+                $.ajax({
+                    url : "http://localhost:3001/send-msg",
+                    type: "POST",
+                    data : formData,
+                    success: function(data, textStatus, jqXHR)
+                    {
+                      console.log('success : ', data);
+                    },
+                    error: function (jqXHR, textStatus, errorThrown)
+                    {
+                         console.log('error : ', error);
+                    }
+                });      
+            };
+
+        reset.innerHTML = 'Reset';
+        reset.className = 'btn secondary-btn';
+        reset.addEventListener('click', resetForm, false);
+        formTrgtNavEl.appendChild(reset);
+
+        submit.innerHTML = 'Submit';
+        submit.className = 'btn primary-btn';
+        submit.addEventListener('click', submitFrom, false);
+        formTrgtNavEl.appendChild(submit);
+    },
+
+    init = function() {
+        var options = steps.options || null;
+
+        createButtons();
+        createTitle(steps.title || '');
+
+        if (options) {
+            formTrgtOptionEl.innerHTML = '';
+            currentPath = 'steps.options';
+            for (var option in options) {
+                createOption(options[option]['name'] || '', option, currentPath);
+            }
+        }
+    };
+
+    init();
+})();
+</script>
