@@ -3,6 +3,10 @@
   "version": "0.0.1",
   "description": "Node mailer endpoint to send emails",
   "main": "server.js",
+  "repository": {
+      "type": "git",
+      "url": "git://github.com/DMJr/node_emailer.git"
+  },
   "dependencies": {
     "aws-sdk": "^2.5.5",
     "body-parser": "^1.15.2",
