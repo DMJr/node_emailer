@@ -44,7 +44,7 @@ app.post('/send-msg', checkWhiteListedDomains, function(req, res) {
     var ses;
 
     if (process && process.env && process.env.isHeroku) {
-      AWS.config.update({
+      aws.config.update({
         accessKeyId: process.env.accessKeyId,
         secretAccessKey: process.env.secretAccessKey,
         region: process.env.region
