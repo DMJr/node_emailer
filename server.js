@@ -39,32 +39,41 @@ function checkWhiteListedDomains(req, res, next) {
 }
 
 app.post('/send-msg', checkWhiteListedDomains, function(req, res) {
-    console.log('in /send-msg');
-    // load aws sdk
     var aws = require('aws-sdk');
-        awsConfigPath = process && process.env && process.env.isHeroku ? process.env : 'config.json',
-        aws.config.loadFromPath(awsConfigPath), // load aws config
-        ses = new aws.SES({apiVersion: '2010-12-01'}), //load AWS SES
 
-        // https://jsbin.com/hixanogija/edit?html
-        // exPostContent = {
-        //     "toEmail": "liftgates@gmail.com",
-        //     "fromEmail":"liftgates@gmail.com",
-        //     "senderName": "Micky",
-        //     "contactEmail": "mmouse@dis.com",
-        //     "contactPhone": "7742663297",
-        //     "senderMsg": "Hello there!  I want a liftgate now!"
-        // }
-        to = ['liftgates@gmail.com'],
-        from = 'liftgates@gmail.com',
-        params = req.body,
-        defaultVal = 'Not Provided',
-        senderName = params.name || defaultVal,
-        toEmail = [params.toEmail] || ['liftgates@gmail.com'],
-        fromEmail = params.fromEmail || defaultVal,
-        contactEmail = params.contactEmail || defaultVal,
-        contactPhone = params.contactPhone || defaultVal,
-        senderMsg = params.senderMsg || defaultVal;
+    var ses;
+
+    if (process && process.env && process.env.isHeroku) {
+      AWS.config.update({
+        accessKeyId: process.env.accessKeyId,
+        secretAccessKey: process.env.secretAccessKey,
+        region: process.env.region
+      });
+    } else {
+        aws.config.loadFromPath('config.json'), // load aws config
+    }
+
+    ses = new aws.SES({apiVersion: '2010-12-01'}), //load AWS SES
+
+    // https://jsbin.com/hixanogija/edit?html
+    // exPostContent = {
+    //     "toEmail": "liftgates@gmail.com",
+    //     "fromEmail":"liftgates@gmail.com",
+    //     "senderName": "Micky",
+    //     "contactEmail": "mmouse@dis.com",
+    //     "contactPhone": "7742663297",
+    //     "senderMsg": "Hello there!  I want a liftgate now!"
+    // }
+    to = ['liftgates@gmail.com'],
+    from = 'liftgates@gmail.com',
+    params = req.body,
+    defaultVal = 'Not Provided',
+    senderName = params.name || defaultVal,
+    toEmail = [params.toEmail] || ['liftgates@gmail.com'],
+    fromEmail = params.fromEmail || defaultVal,
+    contactEmail = params.contactEmail || defaultVal,
+    contactPhone = params.contactPhone || defaultVal,
+    senderMsg = params.senderMsg || defaultVal;
 
     if (!toEmail && !fromEmail) {
         console.log('FAILING');
