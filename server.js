@@ -32,7 +32,7 @@ function checkWhiteListedDomains(req, res, next) {
       return originDomain.indexOf(domain) > -1;
     }
 
-    if (!(['localhost', 'jsbin', 'liftgateme'].some(containsDomain))) {
+    if (!(['shielded-wave-41905.herokuapp', 'localhost', 'jsbin', 'liftgateme'].some(containsDomain))) {
         return;
     }
     next();
