@@ -44,10 +44,14 @@ app.post('/send-msg', checkWhiteListedDomains, function(req, res) {
     var ses;
 
     if (process && process.env && process.env.isHeroku) {
+        var aki = process.env.accessKeyId,
+            sak = process.env.secretAccessKey,
+            reg = process.env.region;
+            
       aws.config.update({
-        accessKeyId: process.env.accessKeyId,
-        secretAccessKey: process.env.secretAccessKey,
-        region: process.env.region
+        accessKeyId: aki,
+        secretAccessKey: sak,
+        region: reg
       });
     } else {
         aws.config.loadFromPath('config.json'), // load aws config
