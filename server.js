@@ -95,5 +95,5 @@ app.post('/send-msg', checkWhiteListedDomains, function(req, res) {
     res.send('Send msg route');
 });
 
-app.listen(3001);
-console.log('Listening on port 3001...');
+app.listen(process.env.PORT || 3001);
+console.log('Listening on port %s', (process.env.PORT || 3001));
