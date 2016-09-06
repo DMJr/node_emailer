@@ -47,17 +47,17 @@ app.post('/send-msg', checkWhiteListedDomains, function(req, res) {
         var aki = process.env.accessKeyId,
             sak = process.env.secretAccessKey,
             reg = process.env.region;
-            
+
       aws.config.update({
         accessKeyId: aki,
         secretAccessKey: sak,
         region: reg
       });
     } else {
-        aws.config.loadFromPath('config.json'), // load aws config
+        aws.config.loadFromPath('config.json'); // load aws config
     }
 
-    ses = new aws.SES({apiVersion: '2010-12-01'}), //load AWS SES
+    ses = new aws.SES({apiVersion: '2010-12-01'}); //load AWS SES
 
     // https://jsbin.com/hixanogija/edit?html
     // exPostContent = {
