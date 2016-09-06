@@ -1,0 +1,110 @@
+#lgm-custom-contact-form {
+    padding: 20px;
+    background: #FFF;
+    border: 2px solid #444;
+    -webkit-border-radius: 6;
+    -moz-border-radius: 6;
+    border-radius: 6px;
+    position: relative;
+    /*min-height: 250px;*/
+    -webkit-transition: all .5s ease;
+    transition: all .2s ease;
+}
+#lgm-custom-contact-form.expanded {
+}
+#lgm-custom-option-title {
+    width: 100%;
+    text-align: center;
+    padding: 10px 0;
+    border-bottom: 1px solid #444;
+}
+#lgm-custom-choices {
+    padding: 10px;
+    text-align: center;
+}
+#lgm-custom-contact-form-inputs {
+    display: none;
+}
+#lgm-custom-contact-form-inputs.active {
+    display: block;
+    height: 50px;
+    width: 100%;
+    -webkit-transition: all .5s ease;
+    transition: all .5s ease;
+}
+
+.form-field-holder {
+    width: 100%;
+    margin-bottom: 15px;
+}
+.form-field-name {
+    display: inline-block;
+    width: 200px
+}
+.form-field-input {
+    display: inline-block;
+    width: 200px;
+}
+.lgm-input-field {
+    border: none;
+    border-bottom: 2px dotted #444;
+    width: 100%;
+}
+.lgm-input-field:focus {
+    outline: none;
+}
+
+#lgm-nav-btns {
+    text-align: right;
+}
+.btn {
+    -webkit-border-radius: 6;
+    -moz-border-radius: 6;
+    border-radius: 6px;
+    width: 100px;
+    padding: 10px 20px;
+    text-align: center;
+    display: inline-block;
+    margin-right: 15px;
+    -webkit-transition: all .3s ease;
+    transition: all .3s ease;
+}
+.btn:hover {
+    cursor: pointer;
+}
+.primary-btn {
+    background: #22b8f3;
+    color: #FFF;
+}
+.secondary-btn {
+    color: #22b8f3;
+    background: #FFF;
+    border: 2px solid #22b8f3;
+}
+.option-btn {
+    -webkit-border-radius: 6;
+    -moz-border-radius: 6;
+    border-radius: 6px;
+    color: #22b8f3;
+    background: #FFF;
+    padding: 20px;
+    border: solid #22b8f3 2px;
+    text-decoration: none;
+    width: 200px;
+    margin-right: 10px;
+    margin-bottom: 10px;
+    text-align: center;
+    display: inline-block;
+    -webkit-transition: all .3s ease;
+    transition: all .3s ease;
+}
+
+.option-btn:hover {
+    background: #22b8f3;
+    color: #FFF;
+    cursor: pointer;
+    text-decoration: none;
+}
+.title {
+    text-align: center;
+}
