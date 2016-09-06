@@ -42,7 +42,7 @@ app.post('/send-msg', checkWhiteListedDomains, function(req, res) {
     console.log('in /send-msg');
     // load aws sdk
     var aws = require('aws-sdk');
-        awsConfigPath = process && process.env && process.env.isHeroku ? 'process.env' : 'config.json',
+        awsConfigPath = process && process.env && process.env.isHeroku ? process.env : 'config.json',
         aws.config.loadFromPath(awsConfigPath), // load aws config
         ses = new aws.SES({apiVersion: '2010-12-01'}), //load AWS SES
 
