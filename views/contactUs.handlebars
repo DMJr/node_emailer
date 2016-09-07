@@ -10,7 +10,8 @@
 
 <script>
 (function() {
-    var steps = {
+    var newGateFields = ['Name', 'Email', 'Aprox. Capacity', 'Vehicle Type', 'Distance Ground to Deck Height', '102 or 96 Wide vehicle?'],
+        steps = {
         'title': 'How can we help?',
         'options': {
             'liftgate': {
@@ -20,7 +21,7 @@
                     'replacment': {
                         'name': 'Replacment of Current Gate',
                         'title': 'Great! Please provide the info below and we\'ll get right back to you',
-                        'formFields': ['Name', 'Email', 'Manufacturer', 'Serial Number']
+                        'formFields': ['Name', 'Email', 'Manufacturer', 'Serial Number', 'Model']
                     },
                     'newStyle': {
                         'name': 'Choose a new gate',
@@ -29,27 +30,27 @@
                             'tuckUnder': {
                                 'name': 'Tuck-Under',
                                 'title': 'Great! Please provide the info below and we\'ll get right back to you',
-                                'formFields': ['Name', 'Email', 'Aprox. Capacity', 'Vehicle Type', 'Distance Ground to Deck Height']
+                                'formFields': newGateFields
                             },
                             'pickupLift': {
                                 'name': 'Pickup-Lift',
                                 'title': 'Great! Please provide the info below and we\'ll get right back to you',
-                                'formFields': ['Name', 'Email', 'Aprox. Capacity', 'Vehicle Type', 'Distance Ground to Deck Height']
+                                'formFields': newGateFields
                             },
                             'columnLift': {
                                 'name': 'Column Lift',
                                 'title': 'Great! Please provide the info below and we\'ll get right back to you',
-                                'formFields': ['Name', 'Email', 'Aprox. Capacity', 'Vehicle Type', 'Distance Ground to Deck Height']
+                                'formFields': newGateFields
                             },
                             'cantileverLift': {
                                 'name': 'Cantilever Lift',
                                 'title': 'Great! Please provide the info below and we\'ll get right back to you',
-                                'formFields': ['Name', 'Email', 'Aprox. Capacity', 'Vehicle Type', 'Distance Ground to Deck Height']
+                                'formFields': newGateFields
                             },
                             'manufactuerModel': {
                                 'name': 'Manufacturer\'s model number',
                                 'title': 'Great! Please provide the info below and we\'ll get right back to you',
-                                'formFields': ['Name', 'Email', 'Aprox. Capacity', 'Vehicle Type', 'Distance Ground to Deck Height']
+                                'formFields': newGateFields
                             }
                         }
                     }
@@ -63,7 +64,7 @@
             'general': {
                 'name': 'General Inquiry',
                 'title': 'Thanks for dropping by.  Leave us a note blow.',
-                'formFields': ['Name', 'Email']
+                'formFields': ['Name', 'Email', 'Message']
             }
         }
     },
@@ -190,6 +191,8 @@
                         content[name] = val;
                     }
                 }
+
+                content['currentPlace', currentPlace.join('.')];
                 content['toEmail'] = 'liftgates@gmail.com';
 
                 formData = {
@@ -203,13 +206,11 @@
                     url : "//shielded-wave-41905.herokuapp.com/send-msg",
                     type: "POST",
                     data : formData,
-                    success: function(data, textStatus, jqXHR)
-                    {
+                    success: function(data, textStatus, jqXHR) {
                       console.log('success : ', data);
                     },
-                    error: function (jqXHR, textStatus, errorThrown)
-                    {
-                         console.log('error : ', error);
+                    error: function (jqXHR, textStatus, errorThrown) {
+                         console.log('error : ', error || 'ERROR!');
                     }
                 });      
             };
