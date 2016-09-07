@@ -78,13 +78,12 @@ app.post('/send-msg', checkWhiteListedDomains, function(req, res) {
     contactEmail = params.contactEmail || defaultVal,
     contactPhone = params.contactPhone || defaultVal,
     senderMsg = params.senderMsg || defaultVal;
-
+    
     if (!toEmail && !fromEmail) {
         console.log('FAILING');
         return;
     }
 
-        console.log('ATTEMPTING TO SEND');
     // this sends the email  @todo - add HTML version
     ses.sendEmail( { 
        Source: fromEmail, 

@@ -192,8 +192,9 @@
                     }
                 }
 
-                content['currentPlace', currentPlace.join('.')];
-                content['toEmail'] = 'liftgates@gmail.com';
+
+                content.currentPlace = currentPlace.join('.');
+                content.toEmail = 'liftgates@gmail.com';
 
                 formData = {
                     "toEmail": "liftgates@gmail.com",
@@ -203,7 +204,8 @@
                 };
 
                 $.ajax({
-                    url : "//shielded-wave-41905.herokuapp.com/send-msg",
+                    // url : "//shielded-wave-41905.herokuapp.com/send-msg",
+                    url : "//localhost:3001/send-msg",
                     type: "POST",
                     data : formData,
                     success: function(data, textStatus, jqXHR) {
