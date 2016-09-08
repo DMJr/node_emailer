@@ -3,18 +3,18 @@
 
 <div class="row">
   <div class="col-xs-12">
-    <form id="pickup-lift-form">
+    <div id="pickup-lift-form">
       <div class="row">
         <div class="col-sm-6 col-xs-12">
           <div class="form-group">
             <label for="contactName">Name</label>
-            <input type="name" class="form-control" id="contactName" aria-describedby="emailHelp" placeholder="Enter name">
+            <input type="name" class="form-control form-input" id="contactName" aria-describedby="emailHelp" placeholder="Enter name">
           </div>
         </div>
         <div class="col-sm-6 col-xs-12">
           <div class="form-group">
-            <label for="exampleInputEmail1">Email address</label>
-            <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter email">
+            <label for="emailAddress">Email address</label>
+            <input type="email" class="form-control form-input" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter email">
             <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
           </div>
         </div>
@@ -63,36 +63,71 @@
       </fieldset>
 
       <div class="form-group row">
-        <div class="col-sm-4">
+        <div class="col-sm-4 col-sm-12">
           <label for="make">Make</label>
-          <textarea class="form-control" id="make" rows="1"></textarea>
+          <input class="form-control form-input" id="make" rows="1"></input>
         </div>
-        <div class="col-sm-4">
+        <div class="col-sm-4 col-sm-12">
           <label for="model">Model</label>
-          <textarea class="form-control" id="model" rows="1"></textarea>
+          <input class="form-control form-input" id="model" rows="1"></input>
         </div>
-        <div class="col-sm-4">
+        <div class="col-sm-4 col-sm-12">
           <label for="make">Year</label>
-          <textarea class="form-control" id="make" rows="1"></textarea>
+          <input class="form-control form-input" id="make" rows="1"></input>
         </div>
       </div>
-
 
       <div class="form-group">
         <label for="leaveUsANote">Leave us a note</label>
-        <textarea class="form-control" id="leaveUsANote" rows="3"></textarea>
+        <input class="form-control form-input" id="leaveUsANote" rows="3"></input>
       </div>
-      <button type="submit" id="pickup-liftgate-form" class="btn btn-primary">Submit</button>
-    </form>
+      <button id="pickup-liftgate-form" class="btn btn-primary">Submit</button>
+    </div>
   </div>
 </div>
 
 <script>
-  function sendFormInfo() {
+  (function() {
+    function getFormInfo() {
+      var txtInput = $('#pickup-lift-form .form-input'),
+          radioBtns = $('#pickup-lift-form .form-check-input'),
+          i = 0,
+          formInputs = {};
 
-  }
+      for(i = 0; i < txtInput.length; i++) {
+        formInputs[txtInput[i].id] = txtInput[i].value;
+      }
 
-  document.getElementById('pickup-liftgate-form').addEventListener('click', sendFormInfo, false);
+      for(i = 0; i < radioBtns.length; i++) {
+        if (radioBtns[i].checked) {
+          formInputs[radioBtns[i].id] = 'TRUE';        
+        }
+      } 
+      return formInputs;   
+    }
 
+    function sendFormInfo() {
+      var formInfo = getFormInfo(),
+          formData = {
+              "toEmail": "liftgates@gmail.com",
+              "fromEmail":"liftgates@gmail.com",
+              "contactEmail": 'Pickup Lift Inquiry',
+              "senderMsg": JSON.stringify(formInfo)
+          };
 
+          $.ajax({
+              url : "/send-msg",
+              type: "POST",
+              data : formData,
+              success: function(data, textStatus, jqXHR) {
+                console.log('success : ', data);
+              },
+              error: function (jqXHR, textStatus, errorThrown) {
+                   console.log('error : ', error || 'ERROR!');
+              }
+          });      
+    }
+
+    document.getElementById('pickup-liftgate-form').addEventListener('click', sendFormInfo, false);    
+  })();
 </script>
