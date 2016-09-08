@@ -29,7 +29,7 @@
       <fieldset class="form-group">
         <legend>Pickup LiftGate Capacity</legend>
         <div class="row">
-          <div class="col-sm-5 col-sm-offset-1">
+          <div class="col-sm-5 col-sm-offset-1 col-xs-5 col-xs-offset-1">
             <div class="form-check">
               <label class="form-check-label">
                 <input type="radio" class="form-check-input" name="optionsCapacity" id="1000lbCap" value="1000lbs" checked="">
@@ -37,7 +37,7 @@
               </label>
             </div>
           </div>
-          <div class="col-sm-5 col-sm-offset-1">
+          <div class="col-sm-5 col-sm-offset-1 col-xs-5 col-xs-offset-1">
             <div class="form-check">
               <label class="form-check-label">
                 <input type="radio" class="form-check-input" name="optionsCapacity" id="1300lbCap" value="1300lbs" checked="">
@@ -50,7 +50,7 @@
       <fieldset class="form-group">
         <legend>Platform Type</legend>
         <div class="row">
-          <div class="col-sm-5 col-sm-offset-1">
+          <div class="col-sm-5 col-xs-6 col-sm-offset-1">
             <div class="form-check">
               <label class="form-check-label">
                 <input type="radio" class="form-check-input" name="platformType" id="platformSteel" value="steel" checked="">
@@ -58,7 +58,7 @@
               </label>
             </div>
           </div>
-          <div class="col-sm-5 col-sm-offset-1">
+          <div class="col-sm-5 col-xs-6 col-sm-offset-1">
             <div class="form-check">
               <label class="form-check-label">
                 <input type="radio" class="form-check-input" name="platformType" id="platformAluminum" value="aluminum" checked="">
@@ -70,17 +70,21 @@
       </fieldset>
 
       <div class="form-group row">
-        <div class="col-sm-4 col-sm-12">
+        <div class="col-md-3 col-sm-6 col-xs-6">
           <label for="make">Vehicle Make</label>
           <input class="form-control form-input" id="make" rows="1"></input>
         </div>
-        <div class="col-sm-4 col-sm-12">
+        <div class="col-md-3 col-sm-6 col-xs-6">
           <label for="model">Vehicle Model</label>
           <input class="form-control form-input" id="model" rows="1"></input>
         </div>
-        <div class="col-sm-4 col-sm-12">
+        <div class="col-md-3 col-sm-6 col-xs-6">
           <label for="make">Vehicle Year</label>
           <input class="form-control form-input" id="make" rows="1"></input>
+        </div>
+        <div class="col-md-3 col-sm-6 col-xs-6">
+          <label for="make">Ship To Zip Code</label>
+          <input class="form-control form-input" id="shipToZip" rows="1"></input>
         </div>
       </div>
 
@@ -88,13 +92,15 @@
         <label for="leaveUsANote">Leave us a note</label>
         <input class="form-control form-input" id="leaveUsANote" rows="3"></input>
       </div>
-      <button id="pickup-liftgate-form" class="btn btn-primary">Submit</button>
+      <button id="pickup-liftgate-form-submit" class="btn btn-primary">Submit</button>
     </div>
   </div>
 </div>
 
 <script>
   (function() {
+    var submitBtn;
+
     function getFormInfo() {
       var txtInput = $('#pickup-lift-form .form-input'),
           radioBtns = $('#pickup-lift-form .form-check-input'),
@@ -127,7 +133,8 @@
               type: "POST",
               data : formData,
               success: function(data, textStatus, jqXHR) {
-                console.log('success : ', data);
+                submitBtn.innerHTML = 'Thank you!';
+                submitBtn.removeEventListener('click', sendFormInfo, false);
               },
               error: function (jqXHR, textStatus, errorThrown) {
                    console.log('error : ', error || 'ERROR!');
@@ -135,6 +142,7 @@
           });      
     }
 
-    document.getElementById('pickup-liftgate-form').addEventListener('click', sendFormInfo, false);    
+    submitBtn = document.getElementById('pickup-liftgate-form-submit');
+    submitBtn.addEventListener('click', sendFormInfo, false);    
   })();
 </script>
