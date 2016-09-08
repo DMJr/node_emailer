@@ -5,8 +5,6 @@
     -webkit-border-radius: 6;
     -moz-border-radius: 6;
     border-radius: 6px;
-    position: relative;
-    /*min-height: 250px;*/
     -webkit-transition: all .5s ease;
     transition: all .2s ease;
 }
@@ -24,13 +22,13 @@
 }
 #lgm-custom-contact-form-inputs {
     display: none;
+    -webkit-transition: all .5s ease;
+    transition: all .5s ease;
 }
 #lgm-custom-contact-form-inputs.active {
     display: block;
-    height: 50px;
+    height: 300px;
     width: 100%;
-    -webkit-transition: all .5s ease;
-    transition: all .5s ease;
 }
 
 .form-field-holder {
@@ -39,11 +37,12 @@
 }
 .form-field-name {
     display: inline-block;
-    width: 200px
+    width: 300px
 }
 .form-field-input {
     display: inline-block;
-    width: 200px;
+    width: 100%;
+    margin-bottom: 10px 0;
 }
 .lgm-input-field {
     border: none;
@@ -66,15 +65,27 @@
     text-align: center;
     display: inline-block;
     margin-right: 15px;
+    -webkit-box-shadow: 0px 2px 4px #666;
+    -moz-box-shadow: 0px 2px 4px #666;
+    box-shadow: 0px 2px 4px #666;
     -webkit-transition: all .3s ease;
-    transition: all .3s ease;
+    transition: all .1s ease;
 }
 .btn:hover {
     cursor: pointer;
+    -webkit-box-shadow: 0px 2px 4px #FFF;
+    -moz-box-shadow: 0px 2px 4px #FFF;
+    box-shadow: 0px 2px 4px #FFF;
 }
 .primary-btn {
     background: #22b8f3;
     color: #FFF;
+    opacity: 0;
+    -webkit-transition: all .3s ease;
+    transition: all .3s ease;
+}
+.primary-btn.active {
+    opacity: 1;
 }
 .secondary-btn {
     color: #22b8f3;
@@ -95,8 +106,11 @@
     margin-bottom: 10px;
     text-align: center;
     display: inline-block;
+    -webkit-box-shadow: 0px 2px 4px #666;
+    -moz-box-shadow: 0px 2px 4px #666;
+    box-shadow: 0px 2px 4px #666;
     -webkit-transition: all .3s ease;
-    transition: all .3s ease;
+    transition: all .1s ease;
 }
 
 .option-btn:hover {
@@ -104,6 +118,9 @@
     color: #FFF;
     cursor: pointer;
     text-decoration: none;
+    -webkit-box-shadow: 0px 2px 4px #FFF;
+    -moz-box-shadow: 0px 2px 4px #FFF;
+    box-shadow: 0px 2px 4px #FFF;
 }
 .title {
     text-align: center;

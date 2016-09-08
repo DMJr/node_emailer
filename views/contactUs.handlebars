@@ -1,5 +1,5 @@
 <script src="//ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
-<link href="/css/lgm-contact-us.css" rel="stylesheet" type="text/css"/>
+<link href="css/lgm-contact-us.css" rel="stylesheet" type="text/css"/>
 
 <div id="lgm-custom-contact-form">
     <div id="lgm-custom-option-title"></div>
@@ -10,7 +10,8 @@
 
 <script>
 (function() {
-    var newGateFields = ['Name', 'Email', 'Aprox. Capacity', 'Vehicle Type', 'Distance Ground to Deck Height', '102 or 96 Wide vehicle?'],
+    var newGateFields = ['Name', 'Email', 'Capacity (1,000-6,600)', 'Vehicle Type', 'Distance Ground to Deck Height', '102 or 96 Wide vehicle?'],
+        newGateTitleMsg = "Great! Please complete the form below and we'll be in contact."
         steps = {
         'title': 'How can we help?',
         'options': {
@@ -19,37 +20,37 @@
                 'title': 'What are you looking for?',
                 'options': {
                     'replacment': {
-                        'name': 'Replacment of Current Gate',
-                        'title': 'Great! Please provide the info below and we\'ll get right back to you',
+                        'name': 'Replace a current gate',
+                        'title': newGateTitleMsg,
                         'formFields': ['Name', 'Email', 'Manufacturer', 'Serial Number', 'Model']
                     },
                     'newStyle': {
-                        'name': 'Choose a new gate',
+                        'name': 'A new gate',
                         'title': 'What type of gate are you interested in?',
                         'options': {
                             'tuckUnder': {
                                 'name': 'Tuck-Under',
-                                'title': 'Great! Please provide the info below and we\'ll get right back to you',
+                                'title': newGateTitleMsg,
                                 'formFields': newGateFields
                             },
                             'pickupLift': {
                                 'name': 'Pickup-Lift',
-                                'title': 'Great! Please provide the info below and we\'ll get right back to you',
+                                'title': newGateTitleMsg,
                                 'formFields': newGateFields
                             },
                             'columnLift': {
                                 'name': 'Column Lift',
-                                'title': 'Great! Please provide the info below and we\'ll get right back to you',
+                                'title': newGateTitleMsg,
                                 'formFields': newGateFields
                             },
                             'cantileverLift': {
                                 'name': 'Cantilever Lift',
-                                'title': 'Great! Please provide the info below and we\'ll get right back to you',
+                                'title': newGateTitleMsg,
                                 'formFields': newGateFields
                             },
                             'manufactuerModel': {
-                                'name': 'Manufacturer\'s model number',
-                                'title': 'Great! Please provide the info below and we\'ll get right back to you',
+                                'name': "Manufacturer's model number",
+                                'title': newGateTitleMsg,
                                 'formFields': newGateFields
                             }
                         }
@@ -58,7 +59,7 @@
             },
             'parts': {
                 'name': 'Parts',
-                'title': 'Great! If you have a part number, enter it below or include the liftgate\'s serial number and a description.',
+                'title': "Great! If you have a part number, enter it below or include the liftgate's serial number and a description.",
                 'formFields': ['Email', 'Name', 'Part Number', 'Serial Number', 'Description']
             },
             'general': {
@@ -71,11 +72,13 @@
 
     currentPath = null,
     currentPlace = ['steps'],
+
     formTrgtEl = document.getElementById('lgm-custom-contact-form'),
     formTrgtInputEl = document.getElementById('lgm-custom-contact-form-inputs'),
     formTrgtOptionEl = document.getElementById('lgm-custom-choices'),
     formTrgtTitleEl = document.getElementById('lgm-custom-option-title'),
     formTrgtNavEl = document.getElementById('lgm-nav-btns'),
+    submitBtn = null,
 
     showNext = function(path, key) {
         var currentObj = eval(currentPlace.join('.'));
@@ -98,9 +101,6 @@
         var trg = document.getElementById(target),
             fieldsCreated = 0,
             formFieldLength = formFields.length * 25;
-            sizeContainer = function() {
-                formTrgtInputEl.style.height = formFieldLength + 'px';
-            };
 
         formTrgtOptionEl.innerHTML = '';
         trg.innerHTML = '';
@@ -132,7 +132,8 @@
             fieldsCreated++;
             
             if (fieldsCreated === arry.length) {
-                sizeContainer();
+                formTrgtInputEl.className += ' active';
+                submitBtn.className += ' active';
             }
         })
 
@@ -183,6 +184,17 @@
                     val,
                     formData;
 
+                function sayThankYou() {
+                    formTrgtNavEl.innerHTML = '';
+                    formTrgtInputEl.innerHTML = '';
+                    formTrgtInputEl.className = '';
+
+                    formTrgtTitleEl.innerHTML = "Thank you!  We'll be in contact soon.";
+                    formTrgtOptionEl.innerHTML = 'Have a great day!'
+                }
+
+                sayThankYou();
+
                 for(var input in inputs) {
                     if (inputs[input].value) {
                         name = inputs[input].getAttribute('data-name');
@@ -191,7 +203,6 @@
                         content[name] = val;
                     }
                 }
-
 
                 content.currentPlace = currentPlace.join('.');
                 content.toEmail = 'liftgates@gmail.com';
@@ -204,8 +215,7 @@
                 };
 
                 $.ajax({
-                    // url : "//shielded-wave-41905.herokuapp.com/send-msg",
-                    url : "//localhost:3001/send-msg",
+                    url : "/send-msg",
                     type: "POST",
                     data : formData,
                     success: function(data, textStatus, jqXHR) {
@@ -217,15 +227,17 @@
                 });      
             };
 
-        reset.innerHTML = 'Reset';
+        reset.innerHTML = 'Back';
         reset.className = 'btn secondary-btn';
         reset.addEventListener('click', resetForm, false);
         formTrgtNavEl.appendChild(reset);
 
         submit.innerHTML = 'Submit';
         submit.className = 'btn primary-btn';
+        submit.id = 'submit-btn';
         submit.addEventListener('click', submitFrom, false);
         formTrgtNavEl.appendChild(submit);
+        submitBtn = submit;
     },
 
     init = function() {
