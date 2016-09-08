@@ -1,0 +1,98 @@
+<script src="//ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+
+<div class="row">
+  <div class="col-xs-12">
+    <form id="pickup-lift-form">
+      <div class="row">
+        <div class="col-sm-6 col-xs-12">
+          <div class="form-group">
+            <label for="contactName">Name</label>
+            <input type="name" class="form-control" id="contactName" aria-describedby="emailHelp" placeholder="Enter name">
+          </div>
+        </div>
+        <div class="col-sm-6 col-xs-12">
+          <div class="form-group">
+            <label for="exampleInputEmail1">Email address</label>
+            <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter email">
+            <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
+          </div>
+        </div>
+      </div>
+      <fieldset class="form-group">
+        <legend>LiftGate Capacity</legend>
+        <div class="row">
+          <div class="col-xs-6">
+            <div class="form-check">
+              <label class="form-check-label">
+                <input type="radio" class="form-check-input" name="optionsCapacity" id="1000lbCap" value="1000lbs" checked="">
+                    1,000 lbs
+              </label>
+            </div>
+          </div>
+          <div class="col-xs-6">
+            <div class="form-check">
+              <label class="form-check-label">
+                <input type="radio" class="form-check-input" name="optionsCapacity" id="1300lbCap" value="1300lbs" checked="">
+                    1,300 lbs
+              </label>
+            </div>
+          </div>
+        </div>
+      </fieldset>
+      <fieldset class="form-group">
+        <legend>Platform Type</legend>
+        <div class="row">
+          <div class="col-sm-6">
+            <div class="form-check">
+              <label class="form-check-label">
+                <input type="radio" class="form-check-input" name="platformType" id="platformSteel" value="steel" checked="">
+                    Steel (basic)
+              </label>
+            </div>
+          </div>
+          <div class="col-sm-6">
+            <div class="form-check">
+              <label class="form-check-label">
+                <input type="radio" class="form-check-input" name="platformType" id="platformAluminum" value="aluminum" checked="">
+                    Aluminum (light and corrosion resistant)
+              </label>
+            </div>
+          </div>
+        </div>
+      </fieldset>
+
+      <div class="form-group row">
+        <div class="col-sm-4">
+          <label for="make">Make</label>
+          <textarea class="form-control" id="make" rows="1"></textarea>
+        </div>
+        <div class="col-sm-4">
+          <label for="model">Model</label>
+          <textarea class="form-control" id="model" rows="1"></textarea>
+        </div>
+        <div class="col-sm-4">
+          <label for="make">Year</label>
+          <textarea class="form-control" id="make" rows="1"></textarea>
+        </div>
+      </div>
+
+
+      <div class="form-group">
+        <label for="leaveUsANote">Leave us a note</label>
+        <textarea class="form-control" id="leaveUsANote" rows="3"></textarea>
+      </div>
+      <button type="submit" id="pickup-liftgate-form" class="btn btn-primary">Submit</button>
+    </form>
+  </div>
+</div>
+
+<script>
+  function sendFormInfo() {
+
+  }
+
+  document.getElementById('pickup-liftgate-form').addEventListener('click', sendFormInfo, false);
+
+
+</script>

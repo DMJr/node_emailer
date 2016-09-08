@@ -25,6 +25,10 @@ app.get('/lgm-contact-form', function(req,res) {
     res.render('contactUs');
 });
 
+app.get('/pickup-liftgate-quote', function(req,res) {
+    res.render('pickupLiftgateQuote');
+});
+
 function checkWhiteListedDomains(req, res, next) {
     var originDomain = req.get('origin');
 
