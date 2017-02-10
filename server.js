@@ -33,10 +33,11 @@ function checkWhiteListedDomains(req, res, next) {
     var originDomain = req.get('origin');
 
     function containsDomain(domain, index, array) {
+      console.log(domain, originDomain);
       return originDomain.indexOf(domain) > -1;
     }
 
-    if (!(['shielded-wave-41905.herokuapp', 'localhost', 'jsbin', 'liftgateme'].some(containsDomain))) {
+    if (!(['shielded-wave-41905.herokuapp', 'localhost', 'jsbin', 'liftgateme', 'www.liftgateme.com'].some(containsDomain))) {
         return;
     }
     next();
